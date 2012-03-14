@@ -1,7 +1,7 @@
-(load "tester.scm")
-(load "ck.scm")
-(load "tree-unify.scm")
-(load "neq.scm")
+(load "cKanren/tester.scm")
+(load "cKanren/ck.scm")
+(load "cKanren/tree-unify.scm")
+(load "cKanren/neq.scm")
 
 (define distincto
   (lambda (l)

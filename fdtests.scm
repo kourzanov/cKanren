@@ -1,7 +1,7 @@
-(load "tester.scm")
-(load "ck.scm")
-(load "fd.scm")
-(load "tree-unify.scm")
+(load "cKanren/tester.scm")
+(load "cKanren/ck.scm")
+(load "cKanren/fd.scm")
+(load "cKanren/tree-unify.scm")
 
 ;; (test-check "-1"
 ;;   (run* (q)

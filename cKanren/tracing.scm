@@ -1,8 +1,8 @@
-(library (tracing)
+(library (cKanren tracing)
   (export trace-define-mk)
   (import
     (rnrs)
-    (mk)
+    (cKanren mk)
     (only (chezscheme) printf))
 
 (define-syntax trace-define-mk

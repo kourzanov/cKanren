@@ -1,6 +1,6 @@
-(load "ck.scm")
-(load "fd.scm")
-(load "neq.scm")
+(load "cKanren/ck.scm")
+(load "cKanren/fd.scm")
+(load "cKanren/neq.scm")
 
 (define n-queenso
   (lambda (q n)

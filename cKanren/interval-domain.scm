@@ -1,5 +1,5 @@
 (library
-  (interval-domain)
+  (cKanren interval-domain)
   (export range value-dom?
     ;; for fd
     map-sum null-dom? singleton-dom? singleton-element-dom
@@ -9,7 +9,7 @@
     ;; interval helpers
     interval-difference interval-union interval-intersection
     interval-memq? cons-dom interval-overlap? interval-> interval-<)
-  (import (rnrs) (ck) (only (chezscheme) trace-define))
+  (import (rnrs) (cKanren ck) (only (chezscheme) trace-define))
 
 ;;; domains (sorted lists of integers)
 
@@ -256,7 +256,7 @@
 
 )
 
-(import (interval-domain))
+(import (cKanren interval-domain))
 
 ;; range
 (assert (equal? (range 0 10) `((0 . 10))))
