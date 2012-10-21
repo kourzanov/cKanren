@@ -1,0 +1,14 @@
+;; automatically generated, don't edit
+;; /home/pjotr/scheme/Friedman/cKanren.git
+;; Sun Oct 21 13:00:28 2012
+
+(
+  (helpers "/home/pjotr/scheme/helpers.scm")
+  (bigloo-support "cKanren/bigloo-support.scm")
+  (ck "cKanren/ck.scm")
+  (fd "cKanren/fd.scm")
+  (interval-domain "cKanren/interval-domain.scm")
+  (mk "cKanren/mk.scm")
+  (tree-unify "cKanren/tree-unify.scm")
+)
+
