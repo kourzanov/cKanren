@@ -1,14 +1,16 @@
 (module ck
    (library slib)
    (import mk)
-   (export extend-enforce-fns
+   (export extend-enforce-fns extend-reify-fns
            oc->rator oc->rands
-	   update-c update-s
+	   update-c update-s prefix-s
 	   make-a empty-a
 	   composem identitym
 	   goal-construct
 	   enforce-constraints
-	   reify))
+	   reify
+	   ext-c
+	   any/var?))
 
 ; (library 
 ;   (cKanren ck)

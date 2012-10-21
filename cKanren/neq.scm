@@ -1,8 +1,12 @@
-(library
-  (cKanren neq)
-  (export =/=)
-  (import (rnrs) (cKanren ck)
-    (only (cKanren tree-unify) unify))
+(module neq
+   ;(library srfi1)
+   (import bigloo-support mk ck tree-unify fd)
+   (export =/=))
+; (library
+;   (cKanren neq)
+;   (export =/=)
+;   (import (rnrs) (cKanren ck)
+;     (only (cKanren tree-unify) unify))
 
 ;;; little helpers
 
@@ -92,6 +96,6 @@
 
 (extend-reify-fns 'neq reify-constraintsneq)
 
-)
+; )
 
-(import (cKanren neq))
+; (import (cKanren neq))

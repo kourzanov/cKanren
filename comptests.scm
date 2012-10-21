@@ -1,6 +1,10 @@
-(load "cKanren/ck.scm")
-(load "cKanren/fd.scm")
-(load "cKanren/neq.scm")
+(module comptests
+   (import bigloo-support mk ck tree-unify fd interval-domain neq))
+(load "cKanren/tester.scm")
+
+;(load "cKanren/ck.scm")
+;(load "cKanren/fd.scm")
+;(load "cKanren/neq.scm")
 
 (define n-queenso
   (lambda (q n)

@@ -1,6 +1,9 @@
-(import (cKanren never-true))
-(import (cKanren tree-unify))
-(import (cKanren tester))
+(module nevertruetests
+   (import bigloo-support mk ck tree-unify fd interval-domain neq never-true))
+(load "cKanren/tester.scm")
+;(import (cKanren never-true))
+;(import (cKanren tree-unify))
+;(import (cKanren tester))
 
 (test-check "1"
   (run* (q) (== q '()) (never-pairo q))

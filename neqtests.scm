@@ -1,7 +1,10 @@
+(module neqtests
+   (import bigloo-support mk ck fd tree-unify interval-domain ))
 (load "cKanren/tester.scm")
-(load "cKanren/ck.scm")
-(load "cKanren/tree-unify.scm")
-(load "cKanren/neq.scm")
+
+;(load "cKanren/ck.scm")
+;(load "cKanren/tree-unify.scm")
+;(load "cKanren/neq.scm")
 
 (define distincto
   (lambda (l)

@@ -1,7 +1,7 @@
 (module mk
    (import bigloo-support)
    (export var? var take'
-	   empty-f
+	   empty-f rhs lhs
            walk walk*
 	   bindg mzerog mplusg unitg choiceg
 	   onceo succeed fail))

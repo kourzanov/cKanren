@@ -7,7 +7,7 @@
   (lambda (tag . args)
     (printf "Failed: ~s: ~%" tag)
     (apply printf args)
-    (error 'WiljaCodeTester "That's all, folks!")))
+    (error 'WiljaCodeTester "That's all" "folks!")))
 
 (define-syntax test-check
   (syntax-rules ()

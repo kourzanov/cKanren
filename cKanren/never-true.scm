@@ -1,7 +1,11 @@
-(library
-  (cKanren never-true)
-  (export never-trueo never-pairo requiredo allowedo)
-  (import (rnrs) (cKanren ck))
+(module never-true
+   (import mk ck)
+   (export never-trueo never-pairo requiredo allowedo))
+
+; (library
+;   (cKanren never-true)
+;   (export never-trueo never-pairo requiredo allowedo)
+;   (import (rnrs) (cKanren ck))
 
 (define never-true-c
   (lambda (pred? x)
@@ -61,6 +65,6 @@
 (extend-enforce-fns 'required required-enforce)
 (extend-reify-fns 'allowed reified-allowed)
 
-)
+; )
 
-(import (cKanren never-true))
+; (import (cKanren never-true))
