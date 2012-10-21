@@ -1,7 +1,7 @@
-(library
-  (cKanren tester)
-  (export test-check test-divergence)
-  (import (chezscheme))
+;(library
+;  (cKanren tester)
+;  (export test-check test-divergence)
+;  (import (chezscheme))
 
 (define test-error
   (lambda (tag . args)
@@ -36,7 +36,7 @@
                v (- max-ticks t)))
            (lambda (e^) (void))))))))
 
-)
+;)
 
-(import (cKanren tester))
+;(import (cKanren tester))
 

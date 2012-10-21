@@ -1,19 +1,31 @@
-(library 
-  (cKanren ck)
+(module ck
+   (library slib)
+   (import mk)
+   (export extend-enforce-fns
+           oc->rator oc->rands
+	   update-c update-s
+	   make-a empty-a
+	   composem identitym
+	   goal-construct
+	   enforce-constraints
+	   reify))
 
-  (export
-    ;; framework
-    update-s update-c make-a any/var? prefix-s
-    lambdam@ identitym composem goal-construct ext-c
-    build-oc oc->proc oc->rands oc->rator run run* prt
-    extend-enforce-fns extend-reify-fns
+; (library 
+;   (cKanren ck)
 
-    ;; mk
-    lhs rhs walk walk* var? lambdag@ mzerog unitg onceo
-    conde conda condu ifa ifu project fresh :)
+;   (export
+;     ;; framework
+;     update-s update-c make-a any/var? prefix-s
+;     lambdam@ identitym composem goal-construct ext-c
+;     build-oc oc->proc oc->rands oc->rator run run* prt
+;     extend-enforce-fns extend-reify-fns
+
+;     ;; mk
+;     lhs rhs walk walk* var? lambdag@ mzerog unitg onceo
+;     conde conda condu ifa ifu project fresh :)
   
-  (import (rnrs) (cKanren mk)
-    (only (chezscheme) make-parameter))
+;   (import (rnrs) (cKanren mk)
+;     (only (chezscheme) make-parameter))
 
 ;; ---HELPERS------------------------------------------------------
 
@@ -55,6 +67,12 @@
 (define size-s
   (lambda (x)
     (length x)))
+
+(define-syntax lambdam@
+  (syntax-rules (:)
+    ((_ (a) e) (lambda (a) e))
+    ((_ (a : s c) e)
+     (lambdam@ (a) (let ((s (car a)) (c (cdr a))) e)))))
 
 (define update-s-check
   (lambda (x v)
@@ -100,11 +118,7 @@
 
 ;; ---M-PROCS------------------------------------------------------
 
-(define-syntax lambdam@
-  (syntax-rules (:)
-    ((_ (a) e) (lambda (a) e))
-    ((_ (a : s c) e)
-     (lambdam@ (a) (let ((s (car a)) (c (cdr a))) e)))))
+
 
 (define identitym (lambdam@ (a) a))
 
@@ -237,7 +251,7 @@
 (define-syntax run
   (syntax-rules ()
     ((_ n (x) g0 g1 ...)
-     (take n
+     (take' n
        (lambdaf@ ()
          ((fresh (x) g0 g1 ...
             (enforce-constraints x) (reify x))
@@ -249,6 +263,6 @@
 
 ;; ----------------------------------------------------------------
 
-)
+;)
 
-(import (cKanren ck))
+;(import (cKanren ck))

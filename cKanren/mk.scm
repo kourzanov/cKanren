@@ -1,12 +1,20 @@
-(library
-  (cKanren mk)
+(module mk
+   (import bigloo-support)
+   (export var? var take'
+	   empty-f
+           walk walk*
+	   bindg mzerog mplusg unitg choiceg
+	   onceo succeed fail))
+; (library
+;   (cKanren mk)
 
-  (export
-    var var? rhs lhs lambdag@ walk walk* mzerog unitg
-    choiceg lambdaf@ : take empty-f conde conda ifa
-    condu ifu fresh project onceo succeed fail prt)
+;   (export
+;     var var? rhs lhs lambdag@ walk walk* mzerog unitg
+;     choiceg lambdaf@ : take empty-f conde conda ifa
+;     condu ifu fresh project onceo succeed fail prt)
 
-  (import (rnrs) (only (chezscheme) pretty-print))
+;   (import (rnrs) (only (chezscheme) pretty-print))
+
 
 (define var
   (lambda (x)
@@ -23,6 +31,8 @@
 (define lhs
   (lambda (x)
     (car x)))
+
+(define-syntax syntax-violation error)
 
 (define-syntax :
   (lambda (x)
@@ -86,15 +96,15 @@
 
 (define empty-f (lambdaf@ () (mzerog)))
 
-(define take
+(define take'
   (lambda (n f)
     (cond
       ((and n (zero? n)) '())
       (else (case-inf (f)
               (() '())
-              ((f) (take n f))
+              ((f) (take' n f))
               ((a) (cons a '()))
-              ((a f) (cons a (take (and n (- n 1)) f))))))))
+              ((a f) (cons a (take' (and n (- n 1)) f))))))))
 
 (define-syntax bindg*
   (syntax-rules ()
@@ -188,6 +198,6 @@
 
 (define onceo (lambda (g) (condu (g))))
 
-)
+; )
 
-(import (cKanren mk))
+; (import (cKanren mk))

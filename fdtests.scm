@@ -1,7 +1,9 @@
+(module fdtests
+   (import bigloo-support mk ck fd tree-unify interval-domain ))
 (load "cKanren/tester.scm")
-(load "cKanren/ck.scm")
-(load "cKanren/fd.scm")
-(load "cKanren/tree-unify.scm")
+;(load "cKanren/ck.scm")
+;(load "cKanren/fd.scm")
+;(load "cKanren/tree-unify.scm")
 
 ;; (test-check "-1"
 ;;   (run* (q)

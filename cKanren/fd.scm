@@ -1,16 +1,19 @@
-(library
-  (cKanren fd)
-  (export
-    infd domfd =fd =/=fd <=fd <fd
-    plusfd timesfd distinctfd range)
-  (import
-    (rename (rnrs) (list-sort rnrs:list-sort))
-    (cKanren ck) (cKanren interval-domain)
-    (only (chezscheme) trace-define))
+(module fd
+   (library srfi1)
+   (import bigloo-support mk ck interval-domain)
+   (export domfd =fd =/=fd <fd <=fd plusfd distinctfd timesfd))
+
+; (library
+;   (cKanren fd)
+;   (export
+;     infd domfd =fd =/=fd <=fd <fd
+;     plusfd timesfd distinctfd range)
+;   (import
+;     (rename (rnrs) (list-sort rnrs:list-sort))
+;     (cKanren ck) (cKanren interval-domain)
+;     (only (chezscheme) trace-define))
 
 ;;; helpers
-
-(define list-sort rnrs:list-sort)
 
 (define list-sorted?
   (lambda (pred ls)
@@ -328,7 +331,7 @@
 
 (extend-enforce-fns 'fd enforce-constraintsfd)
 
-)
+; )
 
-(import (cKanren fd))
+; (import (cKanren fd))
 

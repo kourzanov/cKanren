@@ -1,15 +1,22 @@
-(library
-  (cKanren interval-domain)
-  (export range value-dom?
-    ;; for fd
-    map-sum null-dom? singleton-dom? singleton-element-dom
-    min-dom max-dom memv-dom? intersection-dom diff-dom
-    copy-before-dom drop-before-dom disjoint-dom? make-dom
+(module interval-domain
+   (import bigloo-support mk)
+   (export null-dom? make-dom max-dom diff-dom intersection-dom
+           copy-before-dom memv-dom? value-dom? singleton-dom?
+	   singleton-element-dom disjoint-dom? min-dom drop-before-dom
+	   map-sum range))
 
-    ;; interval helpers
-    interval-difference interval-union interval-intersection
-    interval-memq? cons-dom interval-overlap? interval-> interval-<)
-  (import (rnrs) (cKanren ck) (only (chezscheme) trace-define))
+; (library
+;   (cKanren interval-domain)
+;   (export range value-dom?
+;     ;; for fd
+;     map-sum null-dom? singleton-dom? singleton-element-dom
+;     min-dom max-dom memv-dom? intersection-dom diff-dom
+;     copy-before-dom drop-before-dom disjoint-dom? make-dom
+
+;     ;; interval helpers
+;     interval-difference interval-union interval-intersection
+;     interval-memq? cons-dom interval-overlap? interval-> interval-<)
+;   (import (rnrs) (cKanren ck) (only (chezscheme) trace-define))
 
 ;;; domains (sorted lists of integers)
 
@@ -254,119 +261,119 @@
        (disjoint-dom? dom1 (cdr dom2)))
       (else #f))))
 
-)
+;)
 
-(import (cKanren interval-domain))
+; (import (cKanren interval-domain))
 
-;; range
-(assert (equal? (range 0 10) `((0 . 10))))
+; ;; range
+; (assert (equal? (range 0 10) `((0 . 10))))
 
-;; interval-overlap?
-(assert (interval-overlap? `(1 . 3) `(2 . 4)))
-(assert (not (interval-overlap? `(1 . 2) `(4 . 5))))
+; ;; interval-overlap?
+; (assert (interval-overlap? `(1 . 3) `(2 . 4)))
+; (assert (not (interval-overlap? `(1 . 2) `(4 . 5))))
 
-;; interval->
-(assert (interval-> `(4 . 5) `(1 . 2)))
-(assert (interval-> `(5 . 5) `(1 . 2)))
-(assert (not (interval-> `(1 . 2) `(4 . 5))))
-(assert (not (interval-> `(4 . 5) `(1 . 4))))
+; ;; interval->
+; (assert (interval-> `(4 . 5) `(1 . 2)))
+; (assert (interval-> `(5 . 5) `(1 . 2)))
+; (assert (not (interval-> `(1 . 2) `(4 . 5))))
+; (assert (not (interval-> `(4 . 5) `(1 . 4))))
 
-;; interval-<
-(assert (not (interval-< `(4 . 5) `(1 . 2))))
-(assert (not (interval-< `(5 . 5) `(1 . 2))))
-(assert (interval-< `(1 . 2) `(4 . 5)))
-(assert (not (interval-< `(4 . 5) `(1 . 4))))
-(assert (interval-< `(1 . 2) `(3 . 9)))
-(assert (not (interval-< `(4 . 5) `(3 . 9))))
+; ;; interval-<
+; (assert (not (interval-< `(4 . 5) `(1 . 2))))
+; (assert (not (interval-< `(5 . 5) `(1 . 2))))
+; (assert (interval-< `(1 . 2) `(4 . 5)))
+; (assert (not (interval-< `(4 . 5) `(1 . 4))))
+; (assert (interval-< `(1 . 2) `(3 . 9)))
+; (assert (not (interval-< `(4 . 5) `(3 . 9))))
 
-;; interval-union
-(assert (equal? (interval-union `(1 . 2) `(2 . 3)) `((1 . 3))))
-(assert (equal? (interval-union `(2 . 3) `(1 . 2)) `((1 . 3))))
-(assert (equal? (interval-union `(1 . 5) `(2 . 3)) `((1 . 5))))
-(assert (equal? (interval-union `(2 . 3) `(1 . 5)) `((1 . 5))))
-(assert (equal? (interval-union `(1 . 3) `(2 . 5)) `((1 . 5))))
-(assert (equal? (interval-union `(2 . 5) `(1 . 3)) `((1 . 5))))
-(assert (equal? (interval-union `(1 . 2) `(4 . 5)) `((1 . 2) (4 . 5))))
-(assert (equal? (interval-union `(4 . 5) `(1 . 2)) `((1 . 2) (4 . 5))))
-(assert (equal? (interval-union `(1 . 2) `(3 . 4)) `((1 . 4))))
+; ;; interval-union
+; (assert (equal? (interval-union `(1 . 2) `(2 . 3)) `((1 . 3))))
+; (assert (equal? (interval-union `(2 . 3) `(1 . 2)) `((1 . 3))))
+; (assert (equal? (interval-union `(1 . 5) `(2 . 3)) `((1 . 5))))
+; (assert (equal? (interval-union `(2 . 3) `(1 . 5)) `((1 . 5))))
+; (assert (equal? (interval-union `(1 . 3) `(2 . 5)) `((1 . 5))))
+; (assert (equal? (interval-union `(2 . 5) `(1 . 3)) `((1 . 5))))
+; (assert (equal? (interval-union `(1 . 2) `(4 . 5)) `((1 . 2) (4 . 5))))
+; (assert (equal? (interval-union `(4 . 5) `(1 . 2)) `((1 . 2) (4 . 5))))
+; (assert (equal? (interval-union `(1 . 2) `(3 . 4)) `((1 . 4))))
 
-;; interval-difference
-(assert (equal? (interval-difference `(1 . 2) `(3 . 4)) `((1 . 2))))
-(assert (equal? (interval-difference `(2 . 3) `(1 . 5)) `()))
-(assert (equal? (interval-difference `(1 . 5) `(2 . 3)) `((1 . 1) (4 . 5))))
-(assert (equal? (interval-difference `(1 . 3) `(3 . 4)) `((1 . 2))))
-(assert (equal? (interval-difference `(1 . 3) `(0 . 1)) `((2 . 3))))
-(assert (equal? (interval-difference `(3 . 10) `(1 . 5)) `((6 . 10))))
-(assert (equal? (interval-difference `(1 . 6) `(3 . 10)) `((1 . 2))))
+; ;; interval-difference
+; (assert (equal? (interval-difference `(1 . 2) `(3 . 4)) `((1 . 2))))
+; (assert (equal? (interval-difference `(2 . 3) `(1 . 5)) `()))
+; (assert (equal? (interval-difference `(1 . 5) `(2 . 3)) `((1 . 1) (4 . 5))))
+; (assert (equal? (interval-difference `(1 . 3) `(3 . 4)) `((1 . 2))))
+; (assert (equal? (interval-difference `(1 . 3) `(0 . 1)) `((2 . 3))))
+; (assert (equal? (interval-difference `(3 . 10) `(1 . 5)) `((6 . 10))))
+; (assert (equal? (interval-difference `(1 . 6) `(3 . 10)) `((1 . 2))))
 
-;; interval-memq?
-(assert (interval-memq? 5 `(1 . 10)))
-(assert (not (interval-memq? 11 `(1 . 10))))
+; ;; interval-memq?
+; (assert (interval-memq? 5 `(1 . 10)))
+; (assert (not (interval-memq? 11 `(1 . 10))))
 
-;; cons-dom
-(assert (equal? (cons-dom 5 `((1 . 2))) `((1 . 2) (5 . 5))))
-(assert (equal? (cons-dom 3 `((4 . 5))) `((3 . 5))))
-(assert (equal? (cons-dom 5 `((3 . 4))) `((3 . 5))))
-(assert (equal? (cons-dom 3 `((1 . 2) (4 . 5))) `((1 . 5))))
+; ;; cons-dom
+; (assert (equal? (cons-dom 5 `((1 . 2))) `((1 . 2) (5 . 5))))
+; (assert (equal? (cons-dom 3 `((4 . 5))) `((3 . 5))))
+; (assert (equal? (cons-dom 5 `((3 . 4))) `((3 . 5))))
+; (assert (equal? (cons-dom 3 `((1 . 2) (4 . 5))) `((1 . 5))))
 
-;; difference-dom
-(assert (equal? (diff-dom `((1 . 2)) `((4 . 5))) `((1 . 2))))
-(assert (equal? (diff-dom `((1 . 10)) `((4 . 5))) `((1 . 3) (6 . 10))))
-(assert (equal? (diff-dom `((1 . 6)) `((3 . 10))) `((1 . 2))))
-(assert (equal? (diff-dom
-                  `((1 . 2) (4 . 5) (7 . 10))
-                  `((3 . 9)))
-          `((1 . 2) (10 . 10))))
-(assert (equal? (diff-dom
-                  `((1 . 10))
-                  `((2 . 3) (5 . 7)))
-          `((1 . 1) (4 . 4) (8 . 10))))
+; ;; difference-dom
+; (assert (equal? (diff-dom `((1 . 2)) `((4 . 5))) `((1 . 2))))
+; (assert (equal? (diff-dom `((1 . 10)) `((4 . 5))) `((1 . 3) (6 . 10))))
+; (assert (equal? (diff-dom `((1 . 6)) `((3 . 10))) `((1 . 2))))
+; (assert (equal? (diff-dom
+;                   `((1 . 2) (4 . 5) (7 . 10))
+;                   `((3 . 9)))
+;           `((1 . 2) (10 . 10))))
+; (assert (equal? (diff-dom
+;                   `((1 . 10))
+;                   `((2 . 3) (5 . 7)))
+;           `((1 . 1) (4 . 4) (8 . 10))))
 
-;; interval-intersection
-(assert (equal? (interval-intersection `(1 . 5) `(6 . 10)) `()))
-(assert (equal? (interval-intersection `(6 . 10) `(1 . 5)) `()))
-(assert (equal? (interval-intersection `(1 . 5) `(2 . 3)) `((2 . 3))))
-(assert (equal? (interval-intersection `(2 . 3) `(1 . 5)) `((2 . 3))))
-(assert (equal? (interval-intersection `(1 . 3) `(2 . 5)) `((2 . 3))))
-(assert (equal? (interval-intersection `(2 . 5) `(1 . 3)) `((2 . 3))))
+; ;; interval-intersection
+; (assert (equal? (interval-intersection `(1 . 5) `(6 . 10)) `()))
+; (assert (equal? (interval-intersection `(6 . 10) `(1 . 5)) `()))
+; (assert (equal? (interval-intersection `(1 . 5) `(2 . 3)) `((2 . 3))))
+; (assert (equal? (interval-intersection `(2 . 3) `(1 . 5)) `((2 . 3))))
+; (assert (equal? (interval-intersection `(1 . 3) `(2 . 5)) `((2 . 3))))
+; (assert (equal? (interval-intersection `(2 . 5) `(1 . 3)) `((2 . 3))))
 
-;; intersection-dom
-(assert (equal? (intersection-dom `((1 . 5)) `((6 . 10))) `()))
-(assert (equal? (intersection-dom `((6 . 10)) `((1 . 5))) `()))
-(assert (equal? (intersection-dom `((1 . 6)) `((3 . 10))) `((3 . 6))))
-(assert (equal? (intersection-dom `((3 . 10)) `((1 . 6))) `((3 . 6))))
-(assert (equal?
-          (intersection-dom
-            `((1 . 2) (4 . 5) (7 . 8))
-            `((3 . 9)))
-          `((4 . 5) (7 . 8))))
-(assert (equal?
-          (intersection-dom
-            `((3 . 9))
-            `((1 . 2) (4 . 5) (7 . 8)))
-          `((4 . 5) (7 . 8))))
+; ;; intersection-dom
+; (assert (equal? (intersection-dom `((1 . 5)) `((6 . 10))) `()))
+; (assert (equal? (intersection-dom `((6 . 10)) `((1 . 5))) `()))
+; (assert (equal? (intersection-dom `((1 . 6)) `((3 . 10))) `((3 . 6))))
+; (assert (equal? (intersection-dom `((3 . 10)) `((1 . 6))) `((3 . 6))))
+; (assert (equal?
+;           (intersection-dom
+;             `((1 . 2) (4 . 5) (7 . 8))
+;             `((3 . 9)))
+;           `((4 . 5) (7 . 8))))
+; (assert (equal?
+;           (intersection-dom
+;             `((3 . 9))
+;             `((1 . 2) (4 . 5) (7 . 8)))
+;           `((4 . 5) (7 . 8))))
 
-;; copy-before
-(assert (equal?
-          (copy-before-dom (lambda (x) (>= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
-          `((1 . 2) (4 . 4))))
-(assert (equal?
-          (copy-before-dom (lambda (x) (<= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
-          `()))
-(assert (equal?
-          (copy-before-dom (lambda (x) (>= x 7)) `((1 . 2) (4 . 6) (8 . 10)))
-          `((1 . 2) (4 . 6))))
-(assert (equal?
-          (copy-before-dom (lambda (x) (>= x 10)) `((1 . 2) (4 . 6) (8 . 10)))
-          `((1 . 2) (4 . 6) (8 . 9))))
-(assert (equal?
-          (copy-before-dom (lambda (x) (>= x 2)) `((1 . 2) (4 . 6) (8 . 10)))
-          `((1 . 1))))
+; ;; copy-before
+; (assert (equal?
+;           (copy-before-dom (lambda (x) (>= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `((1 . 2) (4 . 4))))
+; (assert (equal?
+;           (copy-before-dom (lambda (x) (<= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `()))
+; (assert (equal?
+;           (copy-before-dom (lambda (x) (>= x 7)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `((1 . 2) (4 . 6))))
+; (assert (equal?
+;           (copy-before-dom (lambda (x) (>= x 10)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `((1 . 2) (4 . 6) (8 . 9))))
+; (assert (equal?
+;           (copy-before-dom (lambda (x) (>= x 2)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `((1 . 1))))
 
-;; drop-before
-(assert (equal?
-          (drop-before-dom (lambda (x) (>= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
-          `((5 . 6) (8 . 10))))
+; ;; drop-before
+; (assert (equal?
+;           (drop-before-dom (lambda (x) (>= x 5)) `((1 . 2) (4 . 6) (8 . 10)))
+;           `((5 . 6) (8 . 10))))
 
-(printf "Assertions passed!\n")
+; (printf "Assertions passed!\n")
 
